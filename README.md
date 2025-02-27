@@ -90,7 +90,7 @@ Please see the [self-hosting docs](https://netboot.xyz/docs/selfhosting/) for mo
 To generate, run:
 
 ```
-ansible-playbook -i inventory site.yml
+ansible-playbook site.yml
 ```
 
 The build output will be located in /var/www/html by default.
@@ -98,8 +98,8 @@ The build output will be located in /var/www/html by default.
 #### Deploying with Docker
 
 ```
-docker build -t localbuild -f Dockerfile .
-docker run --rm -it -v $(pwd):/buildout localbuild
+docker build -t localbuild --platform=linux/amd64 -f Dockerfile .
+docker run --rm -it --platform=linux/amd64 -v $(pwd):/buildout localbuild
 ```
 
 The build output will be in the generated folder `buildout`
@@ -122,7 +122,6 @@ In addition to being able to host netboot.xyz locally, you can also create your 
 |------------|-----------------|------------------|---------------|
 | AlmaLinux | https://almalinux.org/ | Yes | No |
 | Alpine Linux | https://alpinelinux.org | Yes | No |
-| Anarchy Linux | https://anarchyinstaller.org | Yes | No |
 | Arch Linux | https://www.archlinux.org | Yes | No |
 | Backbox | https://www.backbox.org | No | Yes |
 | BlackArch Linux | https://blackarch.org | Yes | Yes |
@@ -138,9 +137,9 @@ In addition to being able to host netboot.xyz locally, you can also create your 
 | Fatdog64 | https://distro.ibiblio.org/fatdog/web/ | No | Yes |
 | Fedora | https://fedoraproject.org | Yes | Yes |
 | Feren OS | https://ferenos.weebly.com/ | Yes | No |
-| Flatcar Linux | https://kinvolk.io/flatcar-container-linux/ | Yes | No |
+| Flatcar Container Linux | https://www.flatcar.org | Yes | No |
 | FreeBSD | https://freebsd.org | Yes, disk image | No |
-| FreeDOS | http://www.freedos.org | ISO - Memdisk| No |
+| FreeDOS | https://www.freedos.org | ISO - Memdisk| No |
 | Garuda Linux | https://garudalinux.org/ | No | Yes |
 | Gentoo | https://gentoo.org | Yes | Yes |
 | Harvester | https://harvesterhci.io | Yes | No |
@@ -156,12 +155,12 @@ In addition to being able to host netboot.xyz locally, you can also create your 
 | Manjaro | https://manjaro.org | No | Yes |
 | Mint | https://linuxmint.com | No | Yes |
 | Microsoft Windows | https://www.microsoft.com | User supplied media | No |
-| MirOS | https://www.mirbsd.org | Yes | No |
+| MirOS | http://www.mirbsd.org | Yes | No |
 | Nitrux | https://nxos.org/ | No | Yes |
 | NixOS | https://nixos.org | Yes | No |
 | OpenBSD | https://openbsd.org | Yes | No |
 | openEuler | https://openeuler.org | Yes | No |
-| OpenSUSE | https://opensuse.org | Yes | No |
+| openSUSE | https://opensuse.org | Yes | No |
 | Oracle Linux | https://www.oracle.com/linux/ | Yes | Installer |
 | Parrot Security | https://www.parrotsec.org | No | Yes |
 | Peppermint | https://peppermintos.com | No | Yes |
@@ -169,51 +168,48 @@ In addition to being able to host netboot.xyz locally, you can also create your 
 | Proxmox Open Source Products | https://www.proxmox.com/ | Yes | No |
 | Q4OS | https://q4os.org | No | Yes |
 | Raizo | https://sourceforge.net/projects/live-raizo/ | No | Yes |
-| RancherOS | https://rancher.com/rancher-os | Yes | No |
 | Red Hat Enterprise Linux | https://www.redhat.com | User supplied media | No |
 | Regolith | https://regolith-linux.org | No | Yes |
 | Rocky Linux | https://rockylinux.org/ | Yes | No |
-| Scientific Linux | https://scientificlinux.org | Yes | No |
 | Septor | https://septor.sourceforge.io | No | Yes |
 | Slackware | https://www.slackware.com | Yes | No |
-| SmartOS | https://www.joyent.com/smartos | Yes | No |
+| SmartOS | https://www.smartos.org/ | Yes | No |
 | SparkyLinux | https://sparkylinux.org/ | No | Yes |
-| Tails | https://tails.boum.org/ | No | Yes |
+| Tails | https://tails.net | No | Yes |
 | Talos | https://www.talos.dev/ | Yes | No |
 | Tiny Core Linux | https://tinycorelinux.net | Yes | Yes |
 | Ubuntu | https://www.ubuntu.com | Yes | Yes |
 | VMware | https://www.vmware.com | User supplied media | No |
 | VMware Photon | https://vmware.github.io/photon/ | Yes | No |
+| Vanilla OS | https://vanillaos.org | No | Yes |
 | Voyager | https://voyagerlive.org | No | Yes |
 | VyOS | https://vyos.io | Yes | No |
 | Zen Installer | https://sourceforge.net/projects/revenge-installer | Yes | No |
-| Zorin OS | https://zorinos.com | No | Yes |
+| Zorin OS | https://zorin.com | No | Yes |
 
 ### Utilities
 
 | Name       | URL                     | Type |
 |------------|-------------------------|------|
 | 4MLinux | https://4mlinux.com/ | Kernel/Initrd |
-| ALT Linux Rescue | https://en.altlinux.org/Rescue | ISO - Memdisk |
-| BakAndImgCD | https://bakandimgcd.4mlinux.com/ | Kernel/Initrd |
 | Boot Repair CD | https://sourceforge.net/projects/boot-repair-cd/ | LiveCD |
-| Breakin | http://www.advancedclustering.com/products/software/breakin/ | Kernel/Initrd |
+| Breakin | https://www.advancedclustering.com/products/software/breakin/ | Kernel/Initrd |
 | CAINE | https://www.caine-live.net/ | LiveCD |
-| Clonezilla | http://www.clonezilla.org/ | LiveCD |
-| DBAN | http://www.dban.org/ | Kernel |
-| GParted | http://gparted.org | LiveCD |
-| Grml | http://grml.org | LiveCD |
-| Kaspersky Rescue Disk | https://support.kaspersky.com/viruses/krd18 | LiveCD |
-| Memtest | http://www.memtest.org/ | Kernel |
+| Clonezilla | https://www.clonezilla.org/ | LiveCD |
+| DBAN | https://www.dban.org/ | Kernel |
+| GParted | https://gparted.org | LiveCD |
+| Grml | https://grml.org | LiveCD |
+| Kaspersky Rescue Disk | https://support.kaspersky.com/krd18 | LiveCD |
+| Memtest | https://www.memtest.org/ | Kernel |
 | MemTest86 Free | https://www.memtest86.com | USB Img |
 | Redo Rescue | http://redorescue.com/ | LiveCD |
 | Rescatux | https://www.supergrubdisk.org/rescatux/ | LiveCD |
 | Rescuezilla | https://rescuezilla.com/ | LiveCD |
 | ShredOS | https://github.com/PartialVolume/shredos.x86_64 | Kernel | 
-| Super Grub2 Disk | http://www.supergrubdisk.org | ISO - Memdisk |
+| Super Grub2 Disk | https://www.supergrubdisk.org | ISO - Memdisk |
 | System Rescue | https://system-rescue.org/ | LiveCD |
-| The Smallest Server Suite | https://thesss.4mlinux.com/ | Kernel/Initrd |
-| Ultimate Boot CD | http://www.ultimatebootcd.com | ISO - Memdisk |
+| Ultimate Boot CD | https://www.ultimatebootcd.com | ISO - Memdisk |
+| ZFSBootMenu | https://docs.zfsbootmenu.org/ | Kernel |
 
 ### Stargazers over time
 

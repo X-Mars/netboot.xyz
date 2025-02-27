@@ -27,7 +27,8 @@
 - name: Compile iPXE bootloader for EFI
   ansible.builtin.shell: |
     make clean
-    make EMBED={{ bootloader_filename }} \
+    make -j{{ make_num_jobs }} \
+         EMBED={{ bootloader_filename }} \
          TRUST={{ trust_files }} \
          bin-x86_64-efi/ipxe.efi \
          bin-x86_64-efi/snp.efi \
@@ -39,7 +40,8 @@
 - name: Compile iPXE bootloader for EFI with debug flags
   ansible.builtin.shell: |
     make clean
-    make EMBED={{ bootloader_filename }} \
+    make -j{{ make_num_jobs }} \
+         EMBED={{ bootloader_filename }} \
          DEBUG={{ ipxe_debug_options }} \
          TRUST={{ trust_files }} \
          bin-x86_64-efi/ipxe.efi \
@@ -48,6 +50,18 @@
   args:
     chdir: "{{ ipxe_source_dir }}/src"
   when: ipxe_debug_enabled | bool
+
+- name: Generate iPXE floppy images for EFI
+  ansible.builtin.shell: |
+    truncate -s 1440k bin-x86_64-efi/ipxe.efi.dsk
+    mformat -i bin-x86_64-efi/ipxe.efi.dsk -f 1440 ::
+    mmd -i bin-x86_64-efi/ipxe.efi.dsk ::EFI
+    mmd -i bin-x86_64-efi/ipxe.efi.dsk ::EFI/BOOT
+    cp bin-x86_64-efi/ipxe.efi.dsk bin-x86_64-efi/snp.efi.dsk
+    mcopy -i bin-x86_64-efi/ipxe.efi.dsk  bin-x86_64-efi/ipxe.efi ::EFI/BOOT/BOOTX64.EFI
+    mcopy -i bin-x86_64-efi/snp.efi.dsk  bin-x86_64-efi/snp.efi ::EFI/BOOT/BOOTX64.EFI
+  args:
+    chdir: "{{ ipxe_source_dir }}/src"
 
 - name: Copy iPXE EFI builds to http directory
   ansible.builtin.copy:
@@ -58,13 +72,5 @@
     - {src: "bin-x86_64-efi/ipxe.efi", dest: "{{ bootloader_filename }}.efi"}
     - {src: "bin-x86_64-efi/snp.efi", dest: "{{ bootloader_filename }}-snp.efi"}
     - {src: "bin-x86_64-efi/snponly.efi", dest: "{{ bootloader_filename }}-snponly.efi"}
-  when: bootloader_filename != "netboot.xyz-metal"
-
-- name: Copy iPXE EFI builds to http directory for Equinix Metal
-  ansible.builtin.copy:
-    src: "{{ ipxe_source_dir }}/src/{{ item.src }}"
-    dest: "{{ netbootxyz_root }}/ipxe/{{ item.dest }}"
-    remote_src: true
-  with_items:
-    - {src: "bin-x86_64-efi/ipxe.efi", dest: "{{ bootloader_filename }}.efi"}
-  when: bootloader_filename == "netboot.xyz-metal"
+    - {src: "bin-x86_64-efi/ipxe.efi.dsk", dest: "{{ bootloader_filename }}.efi.dsk"}
+    - {src: "bin-x86_64-efi/snp.efi.dsk", dest: "{{ bootloader_filename }}-snp.efi.dsk"}
